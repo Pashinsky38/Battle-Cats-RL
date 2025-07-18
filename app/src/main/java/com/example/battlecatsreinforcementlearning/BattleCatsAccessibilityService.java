@@ -4,20 +4,17 @@ import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.graphics.Bitmap;
 import android.graphics.Path;
-import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-
 import java.util.Random;
 
 public class BattleCatsAccessibilityService extends AccessibilityService {
 
     private static final String TAG = "BattleCatsAI";
-    private static BattleCatsAccessibilityService instance;
+    private static volatile BattleCatsAccessibilityService instance;
 
     private boolean isBotRunning = false;
     private Handler handler;
@@ -25,8 +22,8 @@ public class BattleCatsAccessibilityService extends AccessibilityService {
     private Random random;
 
     // Game state variables
-    private int screenWidth = 1080;
-    private int screenHeight = 1920;
+    private static final int SCREEN_WIDTH = 1080;
+    private static final int SCREEN_HEIGHT = 1920;
     private long lastActionTime = 0;
     private static final long ACTION_DELAY = 2000; // 2 seconds between actions
 
@@ -40,13 +37,10 @@ public class BattleCatsAccessibilityService extends AccessibilityService {
         Log.d(TAG, "Accessibility service connected");
 
         // Initialize game loop
-        gameLoop = new Runnable() {
-            @Override
-            public void run() {
-                if (isBotRunning) {
-                    processGameState();
-                    handler.postDelayed(this, 500); // Check every 500ms
-                }
+        gameLoop = () -> {
+            if (isBotRunning) {
+                processGameState();
+                handler.postDelayed(gameLoop, 500); // Check every 500ms
             }
         };
     }
@@ -56,8 +50,7 @@ public class BattleCatsAccessibilityService extends AccessibilityService {
         if (!isBotRunning) return;
 
         // Log accessibility events for debugging
-        if (event.getPackageName() != null &&
-                event.getPackageName().toString().contains("battlecats")) {
+        if (event.getPackageName() != null && "jp.co.ponos.battlecats".contentEquals(event.getPackageName())) {
             Log.d(TAG, "Battle Cats event: " + event.getEventType());
         }
     }
@@ -109,22 +102,22 @@ public class BattleCatsAccessibilityService extends AccessibilityService {
         switch (action) {
             case 0:
                 // Deploy basic cat (bottom left area)
-                performTap(200, screenHeight - 200);
+                performTap(200, SCREEN_HEIGHT - 200);
                 Log.d(TAG, "Deployed basic cat");
                 break;
             case 1:
                 // Deploy tank cat (second from left)
-                performTap(400, screenHeight - 200);
+                performTap(400, SCREEN_HEIGHT - 200);
                 Log.d(TAG, "Deployed tank cat");
                 break;
             case 2:
                 // Deploy ranged cat (middle)
-                performTap(600, screenHeight - 200);
+                performTap(600, SCREEN_HEIGHT - 200);
                 Log.d(TAG, "Deployed ranged cat");
                 break;
             case 3:
                 // Use cat cannon (if available)
-                performTap(screenWidth - 100, 200);
+                performTap(SCREEN_WIDTH - 100, 200);
                 Log.d(TAG, "Used cat cannon");
                 break;
         }
@@ -133,25 +126,23 @@ public class BattleCatsAccessibilityService extends AccessibilityService {
     }
 
     private void performTap(float x, float y) {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-            Path path = new Path();
-            path.moveTo(x, y);
+        Path path = new Path();
+        path.moveTo(x, y);
 
-            GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
-            gestureBuilder.addStroke(new GestureDescription.StrokeDescription(path, 0, 100));
+        GestureDescription.Builder gestureBuilder = new GestureDescription.Builder();
+        gestureBuilder.addStroke(new GestureDescription.StrokeDescription(path, 0, 100));
 
-            dispatchGesture(gestureBuilder.build(), new GestureResultCallback() {
-                @Override
-                public void onCompleted(GestureDescription gestureDescription) {
-                    Log.d(TAG, "Tap completed at (" + x + ", " + y + ")");
-                }
+        dispatchGesture(gestureBuilder.build(), new GestureResultCallback() {
+            @Override
+            public void onCompleted(GestureDescription gestureDescription) {
+                Log.d(TAG, "Tap completed at (" + x + ", " + y + ")");
+            }
 
-                @Override
-                public void onCancelled(GestureDescription gestureDescription) {
-                    Log.d(TAG, "Tap cancelled");
-                }
-            }, null);
-        }
+            @Override
+            public void onCancelled(GestureDescription gestureDescription) {
+                Log.d(TAG, "Tap cancelled");
+            }
+        }, null);
     }
 
     // Method to capture screen for RL training data
