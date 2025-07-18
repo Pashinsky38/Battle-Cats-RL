@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Battle Cats Reinforcement Learning</string>
+    <string name="accessibility_service_description">Battle Cats AI Bot - Automates gameplay using reinforcement learning</string>
+</resources>
