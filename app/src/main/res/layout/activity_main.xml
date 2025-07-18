@@ -1,26 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="24dp"
+    android:background="?android:attr/colorBackground"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/titleText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Battle Cats RL Bot"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="🐱 Battle Cats AI 🤖"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="30sp"
         android:textStyle="bold"
+        android:layout_marginBottom="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" tools:ignore="HardcodedText" />
 
     <TextView
+        android:drawablePadding="8dp"
         android:id="@+id/statusText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,34 +34,43 @@
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        app:layout_constraintTop_toBottomOf="@+id/titleText" tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/enableAccessibilityButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="24dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:drawablePadding="12dp"
         android:text="Enable Accessibility Service"
+        android:textColor="?attr/colorOnPrimary"
+        app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent" tools:ignore="HardcodedText"
         app:layout_constraintTop_toBottomOf="@+id/statusText" />
 
     <Button
         android:id="@+id/overlayPermissionButton"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="16dp"
+        android:backgroundTint="?attr/colorPrimary"
+        android:drawablePadding="12dp"
         android:text="Grant Overlay Permission"
+        android:textColor="?attr/colorOnPrimary"
+        app:cornerRadius="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="parent" tools:ignore="HardcodedText"
         app:layout_constraintTop_toBottomOf="@+id/enableAccessibilityButton" />
 
     <LinearLayout
         android:id="@+id/controlsLayout"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:layout_marginTop="32dp"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/overlayPermissionButton">
@@ -64,20 +78,26 @@
         <Button
             android:id="@+id/startBotButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
+            android:backgroundTint="#4CAF50"
+            android:drawablePadding="8dp"
             android:text="Start Bot"
-            android:backgroundTint="#4CAF50" />
+            android:textColor="@android:color/white"
+            app:cornerRadius="8dp" tools:ignore="HardcodedText"/>
 
         <Button
             android:id="@+id/stopBotButton"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
+            android:backgroundTint="#F44336"
+            android:drawablePadding="8dp"
             android:text="Stop Bot"
-            android:backgroundTint="#F44336" />
+            android:textColor="@android:color/white"
+            app:cornerRadius="8dp" tools:ignore="HardcodedText"/>
 
     </LinearLayout>
 
@@ -86,10 +106,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Instructions:\n1. Enable accessibility service\n2. Grant overlay permission\n3. Start the bot\n4. Open Battle Cats\n5. Navigate to a stage\n6. The bot will begin learning!"
-        android:textSize="14sp"
+        android:padding="12dp"
+        android:text="🚀 Quick Start Guide:\n\n1. ✅ Enable Accessibility Service\n2. ✅ Grant Overlay Permission\n3. ▶️ Tap 'Start Bot'\n4. 🎮 Open Battle Cats\n5. 🗺️ Go to any stage\n6. ✨ Watch the AI learn and conquer!"
+        android:textSize="15sp"
+        android:lineSpacingMultiplier="1.2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/controlsLayout" />
+        app:layout_constraintStart_toStartOf="parent" tools:ignore="HardcodedText"
+        app:layout_constraintTop_toBottomOf="@+id/controlsLayout"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
